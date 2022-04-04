@@ -1,0 +1,24 @@
+{
+  "UG": {
+    "airtel": {
+      "100102162": {
+        "staging": {
+          "originator": "paymoja",
+          "base_url": "https://openapiuat.airtel.africa/",
+          "client_id": "1a57ebd9-e0e3-4a4f-a0e4-8b159428b8cf",
+          "client_secret": "****************************",
+          "pin": ""
+
+          },
+          "production": {
+
+            "base_url":"https://openapi.airtel.africa/"
+
+          },
+          "testing": true
+      }
+    }
+  }
+}
+
+  
