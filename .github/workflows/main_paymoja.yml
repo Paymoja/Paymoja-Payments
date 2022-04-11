@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'paymoja'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B4E8AA0984E94FDDBA9A8BE797D9C966 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_035FCA28ABFD42AA85F2A1519E70D104 }}
