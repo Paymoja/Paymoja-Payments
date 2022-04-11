@@ -60,7 +60,7 @@ class AirtelUGPayments(AirtelUGBase):
                     "msisdn": 706218827  # payment_schema.msisdn
                 },
                 "transaction": {
-                    "amount": 1000,
+                    "amount": payment_schema.amount,
                     "country": "UG",
                     "currency": "UGX",
                     "id": payment_schema.payment_instance_id
