@@ -9,7 +9,6 @@ from schemas.payments_schema import IncomingPaymentSchema
 class PaymentService:
 
     def __init__(self, interface_details: AuthInterfaceSchema):
-
         self.country_code = interface_details.country_code
         self.client_id = interface_details.client_id
         self.provider = interface_details.provider
@@ -45,3 +44,7 @@ class PaymentService:
     async def send_payment(self, db, payment: IncomingPayment):
         payment = await self.payment_manager.send_payment(db, payment)
         return payment
+
+    async def send_disbursement(self, db, payment: IncomingPayment):
+        disbursement = await self.payment_manager.send_disbursement(db, payment)
+        return disbursement

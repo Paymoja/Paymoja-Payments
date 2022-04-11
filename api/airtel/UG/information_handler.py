@@ -8,5 +8,5 @@ class PaymentInformationHandler(InformationHandler):
         self.client = AirtelUGPayments(settings)
 
     async def get_bearer_token(self):
-        return await self.client.get_bearer_token()
+        return self.client.get_bearer_token()
 

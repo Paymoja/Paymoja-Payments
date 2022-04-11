@@ -52,9 +52,10 @@ class BasePaymentHandler:
         """
 
         if payment.status == PaymentStatusEnum.RECEIVED:
-            request_payment = payment.request_payment or parse_obj_as(IncomingPaymentSchema, json.loads(payment.request_data))
+            request_payment = payment.request_payment or parse_obj_as(IncomingPaymentSchema,
+                                                                      json.loads(payment.request_data))
             request_data = await self.convert_request(request_payment)
-            payment.request_data = request_data
+            payment.request_data = request_data.json()
             payment.status = PaymentStatusEnum.SENDING
 
         elif payment.status == PaymentStatusEnum.SENT:
@@ -64,7 +65,7 @@ class BasePaymentHandler:
         else:
             request_data = payment.request_data
 
-        result = await self._send_payment(request_data)
+        result = self._send_payment(request_data)
         success, response_data = self.convert_response(result)
 
         struct_logger.info(event='payment handler',
@@ -77,6 +78,47 @@ class BasePaymentHandler:
         payment.status = PaymentStatusEnum.SENT if success else PaymentStatusEnum.ERROR
 
         payment.response_data = response_data
+
+        save_payment(db, payment)
+
+        return payment
+
+    async def send_disbursement(self, db, payment: IncomingPayment):
+        """
+        Sends the payment to the RA, using
+        1. converts request_data to format the RA expects
+        2. saves the response
+        3. updates the payment status
+        """
+
+        if payment.status == PaymentStatusEnum.RECEIVED:
+            request_payment = payment.request_payment or parse_obj_as(IncomingPaymentSchema,
+                                                                      json.loads(payment.request_data))
+            request_data = await self.convert_request(request_payment)
+            payment.request_data = request_data.json()
+            payment.status = PaymentStatusEnum.SENDING
+
+        elif payment.status == PaymentStatusEnum.SENT:
+
+            return payment
+
+        else:
+            request_data = payment.request_data
+
+        result = self._send_disbursement(request_data)
+        success, response_data = self.convert_response(result)
+
+        struct_logger.info(event='payment handler',
+                           message="sending payment upload request",
+                           request=response_data,
+                           status=success,
+                           response=response_data
+                           )
+
+        payment.status = PaymentStatusEnum.SENT if success else PaymentStatusEnum.ERROR
+
+        payment.response_data = response_data
+
         save_payment(db, payment)
 
         return payment
@@ -117,8 +159,11 @@ class BasePaymentHandler:
         """Get payment all invoices from database"""
         raise NotImplementedError
 
-    async def _send_payment(self, request_data):
+    def _send_payment(self, request_data):
         '''
         Actually send the payment
         '''
+        raise NotImplementedError
+
+    def _send_disbursement(self, request_data):
         raise NotImplementedError

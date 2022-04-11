@@ -6,13 +6,15 @@
           "originator": "paymoja",
           "base_url": "https://openapiuat.airtel.africa/",
           "client_id": "1a57ebd9-e0e3-4a4f-a0e4-8b159428b8cf",
-          "client_secret": "****************************",
-          "pin": ""
+          "client_secret": "34585537-a665-4379-b11b-9107e5a50219",
+          "pin": "4758"
 
           },
-          "production": {
-
-            "base_url":"https://openapi.airtel.africa/"
+          "production": {"originator": "paymoja",
+          "base_url": "https://openapi.airtel.africa",
+          "client_id": "1a57ebd9-e0e3-4a4f-a0e4-8b159428b8cf",
+          "client_secret": "34585537-a665-4379-b11b-9107e5a50219",
+          "pin": "4758"
 
           },
           "testing": true

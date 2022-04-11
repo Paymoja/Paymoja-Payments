@@ -25,7 +25,7 @@ async def incoming_information_request(information_request: str,
 
 
 @router.post("/payment/new")
-async def incoming_invoice_request(incoming_payment: IncomingPaymentSchema,
+async def incoming_payment_request(incoming_payment: IncomingPaymentSchema,
                                    background_tasks: BackgroundTasks,
                                    payment_service=Depends(verify_auth_details),
                                    db=Depends(get_db)
@@ -36,6 +36,27 @@ async def incoming_invoice_request(incoming_payment: IncomingPaymentSchema,
 
         async def send_new_payment():
             await payment_service.send_payment(db, payment_saved)
+
+        background_tasks.add_task(send_new_payment)
+        message = "Payment sent for processing"
+    except Exception as ex:
+        raise HTTPException(status_code=404, detail=str(ex))
+
+    return {"status_code": "200", "message": message}
+
+
+@router.post("/disbursement/new")
+async def incoming_disbursement_request(incoming_payment: IncomingPaymentSchema,
+                                        background_tasks: BackgroundTasks,
+                                        payment_service=Depends(verify_auth_details),
+                                        db=Depends(get_db)
+                                        ):
+    try:
+        message = payment_service
+        payment_saved = await payment_service.create_outgoing_payment(db, incoming_payment)
+
+        async def send_new_payment():
+            await payment_service.send_disbursement(db, payment_saved)
 
         background_tasks.add_task(send_new_payment)
         message = "Payment sent for processing"

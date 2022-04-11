@@ -21,13 +21,13 @@ class HttpxRequest:
 
     async def httpx_request(self, method, data, headers=None):
         try:
-            response = "Unable to send invoice, wrong parameters"
+            response = "Unable to send httpx request, wrong parameters"
             if method.upper() == "POST":
+                struct_logger.info(event="http request", json=data, headers=headers, url=self.url, method=method)
                 response = await self.client.post(self.url,
                                                   json=data,
                                                   timeout=self.timeout,
                                                   headers=headers
-
 
                                                   )
             elif method.upper() == "GET":
@@ -47,4 +47,32 @@ class HttpxRequest:
             return response
         except Exception as ex:
             struct_logger.info(event='HttpxRequest', error=str(ex), request=data)
+            return {"error": str(ex), "status": "", "request": data}
+
+    def http_request(self, method, data, headers=None):
+        try:
+            response = "Unable to send http request, wrong parameters"
+            if method.upper() == "POST":
+                struct_logger.info(event="http request", json=data, headers=headers, url=self.url, method=method)
+                response = requests.request(method,
+                                            self.url,
+                                            data=data,
+                                            headers=headers
+
+                                            )
+            elif method.upper() == "GET":
+                response = requests.request(method,
+                                            self.url,
+                                            headers=headers
+                                            )
+
+            elif method.upper() == "PUT":
+                response = requests.request(method,
+                                            self.url,
+                                            headers=headers
+                                            )
+
+            return response
+        except Exception as ex:
+            struct_logger.info(event='HttpRequest', error=str(ex), request=data)
             return {"error": str(ex), "status": "", "request": data}

@@ -22,25 +22,14 @@ class PaymentHandler(BasePaymentHandler):
         self.client = AirtelUGPayments(settings)
 
     async def convert_request(self, payment_schema: IncomingPaymentSchema):
-        request_data = {
-            "reference": payment_schema.reference,
-            "subscriber": {
-                "country": payment_schema.country,
-                "currency": payment_schema.currency,
-                "msisdn": payment_schema.msisdn
-            },
-            "transaction": {
-                "amount": payment_schema.amount,
-                "country": payment_schema.country,
-                "currency": payment_schema.currency,
-                "id": payment_schema.payment_instance_id
-            }
-        }
 
-        return request_data
+        return payment_schema
 
     def _send_payment(self, request_data):
         return self.client.ussd_push_transaction(request_data)
+
+    def _send_disbursement(self, request_data):
+        return self.client.disbursement_transaction(request_data)
 
     def convert_response(self, response):
 
