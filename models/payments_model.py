@@ -78,3 +78,16 @@ class OutgoingPayment(Base):
     @property
     def request_payment(self):
         return self._request_payment
+
+
+class CallBack(Base):
+    __tablename__ = "call_back"
+
+    id = Column(BigInteger, primary_key=True, index=True)
+    provider = Column(String(255), index=True, nullable=True)
+    callback_data = Column(JSON, nullable=True)
+    issue_date = Column(DateTime(timezone=True))
+    date_last_modified = Column(DateTime(timezone=True))
+
+    class Config:
+        orm_mode = True

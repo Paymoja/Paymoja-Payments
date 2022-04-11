@@ -5,7 +5,7 @@ import structlog
 from pydantic import parse_obj_as
 from models.payments_model import PaymentStatusEnum, IncomingPayment
 from schemas.payments_schema import IncomingPaymentSchema
-from dal.payments_dal import save_payment, create_outgoing_payment, get_payment
+from dal.payments_dal import save_payment, create_outgoing_payment, get_payment, create_callback_payment
 
 struct_logger = structlog.get_logger(__name__)
 
@@ -16,7 +16,7 @@ class BasePaymentHandler:
     that involve sending invoices
     '''
 
-    def __init__(self, settings):
+    def __init__(self):
         """
         Usually, some settings will be needed to initialize a client
         """
@@ -42,6 +42,23 @@ class BasePaymentHandler:
                            status="success"
                            )
         return new_payment
+
+    def save_incoming_callback(self,
+                               db,
+                               callback_data,
+                               provider
+                               ):
+
+        new_callback = create_callback_payment(db,
+                                               callback_data,
+                                               provider)
+
+        struct_logger.info(event='create_call_back',
+                           message="saving new callback",
+                           payment=new_callback,
+                           status="success"
+                           )
+        return new_callback
 
     async def send_payment(self, db, payment: IncomingPayment):
         """

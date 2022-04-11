@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi_caching import CacheManager, InMemoryBackend
 
 from models import payments_model
-from routers import payments_controller
+from routers import payments_controller, ug_airtel_controller
 from utils.database import engine
 import fastapi_chameleon
 import structlog
@@ -25,8 +25,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 fastapi_chameleon.global_init(template_folder, auto_reload=dev_mode)
 BASE_PATH = Path(__file__).resolve().parent
 
-jinja_templates = Jinja2Templates(directory=str(BASE_PATH/"static/templates"))
-
+jinja_templates = Jinja2Templates(directory=str(BASE_PATH / "static/templates"))
 
 cache_backend = InMemoryBackend()
 cache_manager = CacheManager(cache_backend)
@@ -40,6 +39,7 @@ def configure():
 
 def configure_routes():
     app.include_router(payments_controller.router)
+    app.include_router(ug_airtel_controller.router)
 
 
 def configure_settings():
@@ -54,6 +54,7 @@ def configure_settings():
 
 def configure_database():
     payments_model.Base.metadata.create_all(bind=engine)
+
 
 @app.get("/")
 @fastapi_chameleon.template('home/index.pt')

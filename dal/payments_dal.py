@@ -1,7 +1,7 @@
 import structlog
 from sqlalchemy.orm import Session
 
-from models.payments_model import PaymentStatusEnum, IncomingPayment, OutgoingPayment
+from models.payments_model import PaymentStatusEnum, IncomingPayment, OutgoingPayment, CallBack
 from schemas.payments_schema import IncomingPaymentSchema
 
 struct_logger = structlog.get_logger(__name__)
@@ -69,6 +69,17 @@ def create_payment(db: Session, payment_details):
     db.refresh(new_payment)
     return new_payment
 
+
+def create_callback_payment(db: Session, callback_data, provider:str):
+    new_callback = CallBack(provider=provider,
+                            callback_data=callback_data,
+
+                            )
+
+    db.add(new_callback)
+    db.commit()
+    db.refresh(new_callback)
+    return new_callback
 
 def get_payment(db: Session, instance_payment_id: str, country_code: str, provider: str, client_id: str):
     payment = db.query(IncomingPayment).filter(

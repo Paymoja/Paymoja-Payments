@@ -1,5 +1,6 @@
 import importlib
 
+from api.payment_handler import BasePaymentHandler
 from models.payments_model import IncomingPayment
 from schemas.common_schema import AuthInterfaceSchema
 from dependencies.settings import ClientInterfaceSettings
@@ -48,3 +49,8 @@ class PaymentService:
     async def send_disbursement(self, db, payment: IncomingPayment):
         disbursement = await self.payment_manager.send_disbursement(db, payment)
         return disbursement
+
+    async def incoming_call_back(self,db, data,provider):
+        base_payment = BasePaymentHandler()
+        return base_payment.save_incoming_callback(db, data,provider)
+
