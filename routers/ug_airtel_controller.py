@@ -15,6 +15,8 @@ async def callback_url(background_tasks: BackgroundTasks, request: Request, db=D
 
         request = await request.json()
 
+        print(request)
+
         def save_call_back():
             base_payment = BasePaymentHandler()
             return base_payment.save_incoming_callback(db, request, "airtel")
