@@ -61,6 +61,8 @@ poyo==0.5.0
 protobuf==3.19.3
 pycparser==2.20
 pycryptodome==3.10.4
+psycopg2
+pycrypto
 pydantic==1.8.2
 PyJWT==2.1.0
 pylint==2.11.1
