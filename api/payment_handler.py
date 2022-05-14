@@ -87,7 +87,7 @@ class BasePaymentHandler:
 
         struct_logger.info(event='payment handler',
                            message="sending payment upload request",
-                           request=response_data,
+                           request=request_data,
                            status=success,
                            response=response_data
                            )

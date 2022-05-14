@@ -11,13 +11,13 @@
 
           },
           "production": {"originator": "paymoja",
-          "base_url": "https://openapi.airtel.africa",
-          "client_id": "1a57ebd9-e0e3-4a4f-a0e4-8b159428b8cf",
-          "client_secret": "34585537-a665-4379-b11b-9107e5a50219",
-          "pin": "4758"
+          "base_url": "https://openapi.airtel.africa/",
+          "client_id": "77f1855a-9648-4b7b-ade8-bf65d6c7d89c",
+          "client_secret": "2113240f-8e7a-46aa-93b0-fa53ff54dea8",
+          "pin": "0486"
 
           },
-          "testing": true
+          "testing": false
       }
     }
   }

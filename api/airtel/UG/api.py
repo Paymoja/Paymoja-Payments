@@ -24,8 +24,8 @@ class AirtelUGPayments(AirtelUGBase):
             }
 
             request_data = json.dumps({
-                "client_id": "1a57ebd9-e0e3-4a4f-a0e4-8b159428b8cf",
-                "client_secret": "34585537-a665-4379-b11b-9107e5a50219",
+                "client_id": self.client_id,
+                "client_secret": self.client_secret,
                 "grant_type": "client_credentials"
             })
 
@@ -42,7 +42,7 @@ class AirtelUGPayments(AirtelUGBase):
 
         try:
 
-            url = 'https://openapiuat.airtel.africa/merchant/v1/payments/'
+            url = 'https://openapi.airtel.africa/merchant/v1/payments/'
 
             headers = {
                 'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ class AirtelUGPayments(AirtelUGBase):
                 "subscriber": {
                     "country": "UG",
                     "currency": "UGX",
-                    "msisdn": 706218827  # payment_schema.msisdn
+                    "msisdn": 706748530  # payment_schema.msisdn
                 },
                 "transaction": {
                     "amount": payment_schema.amount,
@@ -80,7 +80,9 @@ class AirtelUGPayments(AirtelUGBase):
         """This API is used to transfer an amount from the own account to a payee account."""
         response = []
 
-        url = "https://openapiuat.airtel.africa/standard/v1/disbursements/"
+        url = "https://openapi.airtel.africa/standard/v1/disbursements/"
+
+        print(self.bearer_token)
 
         headers = {
             'Content-Type': 'application/json',
@@ -92,13 +94,13 @@ class AirtelUGPayments(AirtelUGBase):
 
         payload = {
             "payee": {
-                "msisdn": 706218827
+                "msisdn": 700707701
             },
-            "reference":disbursement_schema.reference,
-            "pin": self.pin_encryption("4758"),
+            "reference": disbursement_schema.reference,
+            "pin": self.pin_encryption("0486"),
             "transaction": {
                 "amount": 1000,
-                "id":disbursement_schema.payment_instance_id
+                "id": disbursement_schema.payment_instance_id
             }
         }
 
